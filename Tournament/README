@@ -1,0 +1,138 @@
+LUPU ANDREEA - 311CB - TEMA 1 - STRUCTURI DE DATE
+PUNCTAJ OBTINUT : 105
+
+Detalii despre implementarea temei: 
+MAIN:
+ - initializez structura pentru sala de joc, facand citirea configuratiilor
+pentru asezarea meselor in sala si a jucatorilor la fiecare masa din primul
+fisier  primit ca argument in linia de comanda
+ - citesc numarul de mese din sala si initializez numarul curent si numarul 
+maxim de jucatori ai salii cu valoarea 0 , urmand sa o modific in functie de
+caracteristicile meselor care vor fi citite
+ - pentru a face initializarea meselor si a jucatorilor pentru fiecare masa
+apelez functia InitializareListaMese
+ - citesc evenimentele din cel de-al doilea fisier primit ca argument in linia
+de comanda si in apelez functia corespunzatoare fiecaruia (AfisareListaMese,
+Noroc, Ghinion, Tura, Tura_completa, Clasament, Inchide)
+ - eliberez memoria alocata pentru crearea structurii corespunzatoare salii de 
+joc
+
+FUNCTIILE APELATE:
+1. InitializareListaMese
+	- aloca memorie pentru fiecare celula
+	- pentru numele mesei alocarea se face pe masura ce se citeste cate o litera
+din numele acesteea
+	- se citesc din fisierul ce contine configuratia salii datele despre masa si
+se apeleaza functia InitializareListaJucatori pentru initializarea datelor legate
+de lucatori
+	1.1 -> functia InitializareListaJucatori
+			- se citesc din fisierul ce contine configuratia salii datele despre 
+			jucatorii de la o anumimta masa
+	- modifica numarul curent de jucatori ai salii prin adaugarea la acesta
+a numarului curent de jucatori ai fiecarei mese
+	- modifica numarul maxim de jucatori ai salii prin adaugarea la acesta
+a numarului maxim de jucatori ai fiecarei mese
+	- apelez functia AdaugareMasa pentru a adauga celula nou creata la lista
+de mese a structurii corespunzatoare salii de joc 
+2. AfisareListaMese
+	- daca lista primita ca parametru e goala se afiseaza mesajul 
+"Sala este inchisa!"
+	- altfel se parcurge lista de mese primita ca parametru si se afiseaza 
+informatia din fiecare celula prin apelarea functiei AfiMasa, in care se apeleaza
+functia AfisareListaJucatori pentru afisarea informatiei din celulele listei de
+jucatori, urmand sa se utilizeze AfiJucator pentru informatia de tip Jucator
+3. Noroc
+	- se cauta intai masa la care se afla jucatorul si jucatorul pentru care se
+aplica gradul de noroc, apeland functiile CautareMasa, respectiv CautareJucator
+	3.1 -> functia CautareMasa
+			- parcurge lista de mese din sala de joc si compara numele fiecareia
+			cu numele mesei ce este cautata
+			- daca se gaseste masa cautata, atunci functia intoarce adresa mesei
+			cautate; in caz contrar se intoarce NULL
+	3.2 -> functia CautareJucator
+			- parcurge lista de jucatori de la o anumita masa si compara numele 
+			fiecaruia cu numele jucatorului ce este cautat
+			- daca se gaseste jucatorul cautat, atunci functia intoarce adresa 
+			jucatorului cautat; in caz contrar se intoarce NULL
+	- daca se gasesc masa si apoi jucatorul pe care il dorim aplicam modificarea,
+respectiv adaugam la numarul de maini de joc gradul de noroc citit din fiesierul
+cu evenimente	
+4. Ghinion
+	- se cauta intai masa la care se afla jucatorul si jucatorul pentru care se
+aplica gradul de ghinion, apeland functiile CautareMasa, respectiv CautareJucator
+	- daca se gasesc masa si apoi jucatorul pe care il dorim aplicam modificarea,
+respectiv scadem din numarul de maini de joc gradul de ghinion citit din fiesierul
+cu evenimente
+	- daca in urma acestei modificari numarul de maini de joc ramase jucatorului
+este mai mic sau egal cu 0, atunci jucatorul va fi sters din lista jucatorilor
+de la masa respectiva prin apelarea functiei EliminareJucator
+	4.1 -> functia EliminareJucator
+			- cauta in lista jucatorilor jucatorul care se doreste a fi eliminat
+			- cand acesta este gasit se decrementeaza numarul curent de jucatori
+			de la masa respectiva, precum si numarul curent de jucatori din sala
+			- se elibereaza apoi memoria care a fost alocata pentru acest jucator,
+			folosindu-se functia EliberareJucator pentru eliberarea memoriei
+			ocupate de informatia din celula respectiva
+			- daca in urma stergerii acestui jucator, nu mai exista jucatori la 
+			acea masa, atunci se sterge si masa din lista de mese prin apelarea
+			functiei EliminareMasa 
+	4.1.1 -> functia EliminareMasa
+			- se cauta in lista de mese masa ce se doreste a fi eliminata
+			- cand aceasta este gasita se decrementeaza numarul de mese pe care 
+			le are sala si si scade din numarul maxim de locuri al salii 
+			numarul maxim de jucatori al mesei ce se doreste a fi eliminata
+			- se elibereaza apoi memoria care a fost alocata pentru aceasta masa,
+			folosindu-se functia EliberareMasa pentru eliberarea memoriei ocupate
+			de informatia din celula respectiva
+5. Tura
+	- cauta masa pentru care se doreste aplicarea evenimentului
+	- daca se gaseste se realizeaza rotatia in jurul santinelei
+	- se parcurge apoi lista de jucatori de la acea masa si se decrementeaza 
+numarul mainilor de joc pentru fiecare jucator; daca prin aceasta operatiune un 
+jucator ajunge la un numar de maini de joc mai mic sau egal cu 0, atunci acel 
+jucator este sters din lista prin apelarea functiei EliminareJucator si se
+verifica dupa daca a fost stearsa si masa la care se afla jucatorul pentru a sti
+daca mai are sens continuarea decrementarii numarului de maini de joc
+6. Tura_completa
+	- se parcurge lista de mese din sala de joc si pentru fiecare masa se apeleaza
+functia Tura
+7. Clasament
+	- se cauta masa pentru care se doreste afisarea clasamentului
+	- daca aceasta se gaseste se incepe construirea unui liste simplu inlantuite
+ordonate descrescator dupa numarul de maini de joc al jucatorilor de la masa
+	- parcurg lista de jucatori de la masa cautata si aloc o noua celula care sa
+contina informatia celulei curente din lista de jucatori de la masa
+	- daca lista nou construita este goala, atunci inserez la inceput celula nou
+alocata
+	- in caz contrar parcurg lista nou creata pentru a gasi locul potrivit pentru
+inserarea noii celule
+	- pentru a gasi locul potrivit verific mai intai daca numarul de maini de joc
+al jucatorului pe care  vreau sa il inserez este mai mare decat numarul de maini
+de joc al jucatorului curent din lista noua si in acest caz fac inserarea inaintea
+acestui si opresc parcurgerea in continuare a listei
+	- in caz contrar verific daca numarul de maini al jucatorului ce trebuie 
+inserat este egal cu numarul de maini al jucatorului curent din lista nou 
+	- daca aceasta conditie e indeplinita parcurg lista nou creata cat timp 
+jucatorii acelei liste au acelasi numar de maini de joc si verific daca il pot 
+insera inaintea cuiva; daca nu il pot insera inaintea nici unuia, il asez dupa
+	- daca nu am reusit sa inserez nicaieri acest jucator si daca am ajuns la
+finalul listei nou create, atunci il asez la sfarsitul ei
+	- afisez lista nou creata, dupa care eliberez memoria alocata pentru 
+construirea ei prin apelare functiei EliminareCopie
+8. Inchide
+	- se cauta masa ce se doreste a fi inchisa
+	- daca se gaseste se calculeaza numarul de locuri care ar ramane disponibile
+in sala dupa eliminarea acesteea
+	- se verifica apoi daca numarul curent de jucatori de la masa ce se doreste 
+a fi stearsa e mai mic sau egal decat numarul de locuri disponibile
+	- daca se verifica aceasta conditie, se parcurge lista de mese care ar ramane
+in urma eliminarii si se incepe redistribuirea jucatorilor de la masa care va fi 
+stearsa la mesele ramase tinandu-se cont de numarul de locuri disponibile pe care
+il are fiecare masa, iar pe masura ce se redistribuie cate un jucator numarul 
+curent de jucatori de la masa ce va fi stearsa e decrementat si numarul curent
+de jucatori de la masa la care a fost redistribuit respectivul jucator este 
+implementat
+	- se elimina apoi masa prin apelarea functiei EliminareMasa
+9. DistrugeSala
+	- distruge lista de mese din sala prin apelarea functiei DistrugeListaMese
+	- eliberarea memoriei alocate pentru structura salii de joc
