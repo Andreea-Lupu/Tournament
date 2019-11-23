@@ -1,7 +1,4 @@
-LUPU ANDREEA - 311CB - TEMA 1 - STRUCTURI DE DATE
-PUNCTAJ OBTINUT : 105
-
-Detalii despre implementarea temei: 
+Detalii despre implementare: 
 MAIN:
  - initializez structura pentru sala de joc, facand citirea configuratiilor
 pentru asezarea meselor in sala si a jucatorilor la fiecare masa din primul
